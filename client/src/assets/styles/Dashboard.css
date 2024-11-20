@@ -11,6 +11,10 @@ body {
     padding: 20px;
 }
 
+.header-two {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #828282;
+}
 
 
 .tab-container {
@@ -26,6 +30,8 @@ body {
 .header {
     margin-top: 20px;
     margin-bottom: 20px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .header-title {
@@ -51,6 +57,13 @@ body {
     align-items: center;
     gap: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.responsive-card {
+    flex: 1;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .summary-icon {
@@ -106,14 +119,17 @@ body {
 .transactions-table th {
     text-align: left;
     padding: 10px;
-    background-color: #f9fafb;
     border-bottom: 1px solid #e5e7eb;
     color: #6b7280;
+    font-size: small;
 }
 
 .transactions-table td {
-    padding: 10px;
+    padding: 20px;
     border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    color: #6b7280;
+    font-size: small;
 }
 
 .transactions-table tr:hover {

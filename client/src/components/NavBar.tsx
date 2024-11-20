@@ -1,6 +1,6 @@
 import "../assets/styles/NavBar.css";
 import logo from "../assets/images/text.png";
-import Tabs from "./Tabs";
+import NavBarTabs from "./NavBarTabs";
 
 
 const NavBar = () => {
@@ -16,8 +16,9 @@ const NavBar = () => {
                 <div className="navbar-logo">
                     extExtract
                 </div>
-                <Tabs />
+
             </nav>
+            <NavBarTabs />
         </div>
     )
 }

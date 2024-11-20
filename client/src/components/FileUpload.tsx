@@ -2,18 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import myImage from "../assets/images/upload-file.png";
 import pdf from "../assets/images/pdf.png"; // Adjust the path as needed
-import ModalView from "../components/ModalView";
+import ModalView from "./ModalView";
 
 
-interface ExtractedFileData {
+export interface ExtractedFileData {
     filename: string;
     file_content: string;
     feedback_rating: string;
 }
-
-// interface Response {
-//     file: ExtractedFileData;
-// }
 
 const FileUpload: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
@@ -22,9 +18,15 @@ const FileUpload: React.FC = () => {
     const [submittedFeedback, setsubmittedFeedback] = useState<boolean>(false);
     const [uploadedFiles, setUploadedFiles] = useState<ExtractedFileData[]>([]);
     const [isUploading, setIsUploading] = useState<boolean>(false);
+    const [uploaded, setUploaded] = useState<boolean>(false);
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isDragging, setIsDragging] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showModalButton, setShowModalButton] = useState(false);
+    const [showExtractButton, setshowExtractButton] = useState(false);
+    const [extractedFileContent, setExtractedFileContent] = useState<string>('');
+
+
 
     const handleThumbsUp = () => {
         alert("You clicked Thumbs Up!");
@@ -58,8 +60,7 @@ const FileUpload: React.FC = () => {
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         const uploadedFile = event.target.files?.[0];
         setFile(uploadedFile || null);
-
-        //extractPdfText(uploadedFile)
+        setshowExtractButton(true)
     };
 
     const handleUpload = async () => {
@@ -90,9 +91,12 @@ const FileUpload: React.FC = () => {
                     }
                 },
             });
+            setShowModalButton(true)
+            setshowExtractButton(false)
 
             console.log("peach");
-            console.log(response.data)
+            console.log(response.data[file.name].file_content)
+            setExtractedFileContent(response.data[file.name].file_content)
         } catch (error) {
             console.error('Error uploading file:', error);
             alert('Failed to upload file.');
@@ -101,22 +105,6 @@ const FileUpload: React.FC = () => {
         }
     };
 
-
-    const extractPdfText = async (uploadedFile: File | undefined) => {
-        try {
-            const form = new FormData();
-            form.append('file', uploadedFile as Blob);
-            const response = await axios.post('http://127.0.0.1:8000/uploadfile/', form)
-            !!uploadedFile && setData(response.data[uploadedFile?.name])
-
-            console.log("pineapple")
-            console.log(response.data)
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-
-    };
 
     const submitFeedback = async (file_name: string | undefined, feedback: string) => {
         try {
@@ -132,36 +120,26 @@ const FileUpload: React.FC = () => {
 
     };
 
-    const getUploadedFiles = async () => {
-        try {
-            const response = await axios.get('http://127.0.0.1:8000/getfiles/')
-            setUploadedFiles(response.data)
-
-            console.log("list of files")
-            console.log(uploadedFiles)
-
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-
-    };
-
     const buttonFileSelect = () => {
         fileInputRef.current?.click(); // Programmatically click the file input
     };
 
-    // useEffect(() => {
-    //     const files = getUploadedFiles()
-    //     console.log("list of files")
-    //     console.log(files)
-    // }, []);
-
-
 
     return (
         <div>
+            <div style={styles.uploadPdf}>
+                <h5 style={styles.headerFive} className="header-two">UPLOAD PDF DOCUMENT</h5>
+                <button
+                    onClick={buttonFileSelect}
+                    style={styles.uploadButton1}
+                    disabled={isUploading}
+                >
+                    {isUploading ? "Uploading..." : "Upload"}
+                </button>
+
+            </div>
             <div style={styles.container}>
+
                 {/* Drag-and-Drop Area */}
                 <div
                     style={{
@@ -172,13 +150,7 @@ const FileUpload: React.FC = () => {
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                 >
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        style={styles.hiddenInput}
-                        accept='.pdf'
-                        onChange={handleFileSelect}
-                    />
+
                     <img
                         src={myImage}
                         alt="My Image"
@@ -190,10 +162,17 @@ const FileUpload: React.FC = () => {
                     </p>
                     {file && <p style={styles.fileName}>{file.name}</p>}
                     <div style={styles.supportedFormats}>
-                        <h5>PDF or TXT</h5>
+                        <h5>UPLOAD PDF DOCUMENTS ONLY</h5>
                         {/* <h5>Maximum size: 25MB</h5> */}
                     </div>
                 </div>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={styles.hiddenInput}
+                    accept='.pdf'
+                    onChange={handleFileSelect}
+                />
                 {file && (
 
                     <div style={styles.progressContainer}>
@@ -228,7 +207,7 @@ const FileUpload: React.FC = () => {
                     </div>
                 )}
                 {
-                    file && (
+                    file && showExtractButton && (
                         <button
                             onClick={handleUpload}
                             style={styles.uploadButton}
@@ -238,22 +217,26 @@ const FileUpload: React.FC = () => {
                         </button>
                     )
                 }
-
-            </div>
-            <div>
-                <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
+                {showModalButton && (
+                    <button style={styles.modalButton}
+                        onClick={() => setIsModalOpen(true)}>Review Extracted Text</button>
+                )
+                }
 
                 {isModalOpen && (
                     <ModalView
                         title="Your Feedback"
-                        summary="Please provide your feedback by choosing one of the options below."
+                        file_name={file?.name}
                         onClose={() => setIsModalOpen(false)}
-                        file_content={data?.file_content}
+                        file_content={extractedFileContent}
                         onThumbsUp={handleThumbsUp}
                         onThumbsDown={handleThumbsDown}
                     />
-                )}
+                )
+                }
+
             </div>
+
             {/* <div>
                 <div style={styles.uploadBox}>{data?.file_content}</div>
                 <div style={styles.feedBackSection}>
@@ -310,20 +293,16 @@ const styles: Record<string, React.CSSProperties> = {
         cursor: 'pointer',
     },
     hiddenInput: {
-        marginTop: 69,
-        marginLeft: 473,
+        border: '2px dashed #cccccc',
+        borderRadius: '8px',
         padding: '20px',
-        width: '45%',
-        height: 80,
+        width: '100%',
+        height: 150,
+        marginTop: -185,
         textAlign: 'center',
-        cursor: 'pointer',
-        position: 'absolute',
         backgroundColor: 'purple',
-        top: 0,
-        left: 0,
-        alignItems: 'center',
+        cursor: 'pointer',
         opacity: 0,
-
     },
     fileName: {
         marginTop: '10px',
@@ -387,12 +366,37 @@ const styles: Record<string, React.CSSProperties> = {
     uploadButton: {
         padding: "10px 20px",
         marginTop: 60,
-
         backgroundColor: "#007BFF",
         color: "#fff",
         border: "none",
         borderRadius: "4px",
         cursor: "pointer",
+    },
+    uploadButton1: {
+        padding: "10px 20px",
+        marginTop: 30,
+        backgroundColor: "#007BFF",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        marginRight: 180,
+    },
+    headerFive: {
+        marginTop: 30,
+        marginLeft: 180,
+        // paddingBottom: -90,
+
+    },
+    modalButton: {
+        padding: "10px 20px",
+        marginTop: 60,
+        backgroundColor: "#007BFF",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        alignSelf: 'center',
     },
     progressContainer: {
         marginTop: '20px',
@@ -413,6 +417,12 @@ const styles: Record<string, React.CSSProperties> = {
         display: 'flex',
         justifyContent: 'space-between',
         marginBottom: '10px',
+    },
+    uploadPdf: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        flexDirection: 'row'
     },
     progressBarContainer: {
         height: '8px',
