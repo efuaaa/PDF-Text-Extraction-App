@@ -4,7 +4,6 @@ import thumbsUp from "../assets/images/thumbs_up.png";
 import thumbsDown from "../assets/images/thumbs_down.png";
 import axios from 'axios';
 
-
 interface ModalProps {
     title: string;
     file_name: string | undefined;
@@ -13,8 +12,6 @@ interface ModalProps {
     onThumbsUp: () => void;
     onThumbsDown: () => void;
 }
-
-
 
 const ModalView: React.FC<ModalProps> = ({
     title,
@@ -26,7 +23,6 @@ const ModalView: React.FC<ModalProps> = ({
 }) => {
 
     const [submittedFeedback, setsubmittedFeedback] = useState<boolean>(false);
-
 
     const submitFeedback = async (file_name: string | undefined, feedback: string) => {
         try {

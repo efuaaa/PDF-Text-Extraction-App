@@ -20,3 +20,11 @@
     font-weight: bold;
     margin-left: -90;
 }
+
+.nav-responsive-view {
+    flex: 1;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}

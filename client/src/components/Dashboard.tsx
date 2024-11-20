@@ -4,9 +4,10 @@ import "../assets/styles/Dashboard.css";
 import folder from "../assets/images/folder.png";
 import thumbsUp from "../assets/images/thumbs_up.png";
 import thumbsDown from "../assets/images/thumbs_down.png";
+import rateUp from "../assets/images/rate_up.png";
+import rateDown from "../assets/images/rate_down.png";
 import axios from 'axios';
 import moment from 'moment';
-
 
 
 export interface ExtractedFileData {
@@ -15,13 +16,6 @@ export interface ExtractedFileData {
     feedback_rating: string;
     date_uploaded: string;
 }
-
-export interface FileSummary {
-    filename: ExtractedFileData;
-}
-
-
-
 
 const Dashboard = () => {
     const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: ExtractedFileData }>({});
@@ -41,16 +35,22 @@ const Dashboard = () => {
         try {
             const response = await axios.get('http://127.0.0.1:8000/getfiles/')
             setUploadedFiles(response.data)
-
-            console.log("list of files")
-            console.log(uploadedFiles)
-
-
         } catch (error) {
             console.error('Error fetching data:', error);
         }
 
     };
+
+    const sortedFiles = Object.entries(uploadedFiles)
+        .sort(([, fileA], [, fileB]) => {
+            const dateA = new Date(fileA.date_uploaded).getTime();
+            const dateB = new Date(fileB.date_uploaded).getTime();
+            return dateB - dateA;
+        })
+        .reduce((acc, [key, value]) => {
+            acc[key] = value;
+            return acc;
+        }, {} as typeof uploadedFiles);
 
     const fetchSummary = async () => {
         setLoading(true);
@@ -63,53 +63,72 @@ const Dashboard = () => {
         fetchSummary();
     }, []);
 
+    const renderRateUp = () => (
+        <>
+
+            <img
+                src={rateUp}
+                alt="rateUp"
+                style={{ width: "22px", height: "22px" }}
+            />
+        </>
+    );
+    const renderRateDown = () => (
+        <>
+
+            <img
+                src={rateDown}
+                alt="rateDown"
+                style={{ width: "22px", height: "22px" }}
+            />
+        </>
+    );
+
     return (
         <div className="dashboard-container">
-
             {/* Header Section */}
             <header className="header">
                 <h1 className="header-title">Extraction Inventory</h1>
             </header>
-
-
             {/* Summary Section */}
             <h5 className="header-two">SUMMARY</h5>
             <section className="summary-section">
+                <div className="responsive-card">
+                    <div className="summary-card">
+                        <div className="summary-icon"> <img
+                            src={folder}
+                            alt="folder"
+                            style={{ width: "60px", height: "60px" }}
+                        /></div>
+                        <div>
+                            <h2 style={{ color: "#2542A3" }}>{dictionaryLength}</h2>
+                            <p>Files</p>
 
-                <div className="summary-card">
-                    <div className="summary-icon"> <img
-                        src={folder}
-                        alt="folder"
-                        style={{ width: "60px", height: "60px" }}
-                    /></div>
-                    <div>
-                        <h2 style={{ color: "#2542A3" }}>{dictionaryLength}</h2>
-                        <p>Files</p>
-
+                        </div>
                     </div>
-                </div>
-                <div className="summary-card">
-                    <div className="summary-icon"><img
-                        src={thumbsUp}
-                        alt="thumbsUp"
-                        style={{ width: "60px", height: "60px" }}
-                    /></div>
-                    <div>
-                        <h2 style={{ color: "#2542A3" }}>{parseFloat(goodRatingPercentage.toFixed(1)) + '%'}</h2>
-                        <p>Good Rating</p>
+                    <div className="summary-card">
+                        <div className="summary-icon"><img
+                            src={thumbsUp}
+                            alt="thumbsUp"
+                            style={{ width: "60px", height: "60px" }}
+                        /></div>
+                        <div>
+                            <h2 style={{ color: "#2542A3" }}>{parseFloat(goodRatingPercentage.toFixed(1)) + '%'}</h2>
+                            <p>Good Rating</p>
 
+                        </div>
                     </div>
-                </div>
-                <div className="summary-card">
-                    <div className="summary-icon"><img
-                        src={thumbsDown}
-                        alt="thumbsDown"
-                        style={{ width: "60px", height: "60px" }}
-                    /></div>
-                    <div>
-                        <h2 style={{ color: "#2542A3" }}>{parseFloat(badRatingPercentage.toFixed(1)) + '%'}</h2>
-                        <p>Bad Rating</p>
+                    <div className="summary-card">
+                        <div className="summary-icon"><img
+                            src={thumbsDown}
+                            alt="thumbsDown"
+                            style={{ width: "60px", height: "60px" }}
+                        /></div>
+                        <div>
+                            <h2 style={{ color: "#2542A3" }}>{parseFloat(badRatingPercentage.toFixed(1)) + '%'}</h2>
+                            <p>Bad Rating</p>
 
+                        </div>
                     </div>
                 </div>
             </section>
@@ -118,28 +137,38 @@ const Dashboard = () => {
             <section className="transactions-section">
                 <h5 className="header-two">RECENT EXTRACTIONS</h5>
 
-                <div className="responsive-card">
-                    <div className="summary-card">
-                        <table className="transactions-table">
-                            <thead>
-                                <tr>
-                                    <th>File name</th>
-                                    <th>Date uploaded</th>
-                                    <th>Rating</th>
+
+                <div className="summary-card">
+                    <table className="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>File name</th>
+                                <th>Date uploaded</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.entries(sortedFiles).map(([key, file]) => (
+                                <tr key={key}>
+                                    <td>{file.filename}</td>
+                                    <td>{moment(file.date_uploaded).format('LLL') || 'N/A'}</td>
+                                    {/* <td>{file.feedback_rating}</td> */}
+                                    <td>
+                                        {file.feedback_rating === "thumbs up" ? (
+                                            renderRateUp()
+                                        ) : file.feedback_rating === "thumbs down" ? (
+                                            renderRateDown()
+                                        ) : (
+                                            "N/A"
+                                        )}
+                                    </td>
+
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {Object.entries(uploadedFiles).map(([key, file]) => (
-                                    <tr key={key}>
-                                        <td>{file.filename}</td>
-                                        <td>{moment(file.date_uploaded).format('LL') || 'N/A'}</td>
-                                        <td>{file.feedback_rating || 'N/A'}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
+
             </section>
         </div>
     );
