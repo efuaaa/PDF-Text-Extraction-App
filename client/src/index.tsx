@@ -3,12 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import FileUpload from './components/FileUpload';
+import { HeaderComponent } from './components/HeaderComponent';
+import FileUploadProgess from './components/FileUploadProgess';
+import UploadedFilesView from './components/UploadedFilesView';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    {/* <HeaderComponent /> */}
+    {/* <FileUploadProgess /> */}
+    {/* <FileUpload />
+    <UploadedFilesView /> */}
+
+
     <App />
   </React.StrictMode>
 );

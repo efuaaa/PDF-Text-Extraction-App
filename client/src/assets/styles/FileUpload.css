@@ -1,0 +1,178 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    margin-top: 30px;
+}
+
+.uploadBox {
+    border: 2px dashed #cccccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    cursor: pointer;
+}
+
+.dragging {
+    border-color: #007bff;
+    background-color: #eef7ff;
+}
+
+.feedBackSection {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.instructions {
+    color: #555555;
+    font-size: 14px;
+}
+
+.chooseFile {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.hiddenInput {
+    margin-top: 69px;
+    margin-left: 473px;
+    padding: 20px;
+    width: 45%;
+    height: 80px;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    background-color: purple;
+    top: 0;
+    left: 0;
+    align-items: center;
+    opacity: 0;
+}
+
+.fileName {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333333;
+}
+
+.supportedFormats {
+    margin-top: 20px;
+    color: #888888;
+    font-size: 12px;
+    flex: 1;
+    flex-direction: row;
+    width: 800px;
+}
+
+.exampleSection {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.downloadButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.exampleText {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888888;
+}
+
+.uploadLabel {
+    display: block;
+    margin-bottom: 10px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.orUploadFromURL {
+    margin-bottom: 20px;
+}
+
+.input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.fileSizeText {
+    margin-top: 30px;
+    margin-left: -130px;
+    color: #515151;
+    font-size: 13px;
+}
+
+.fileNameText {
+    margin-top: 5px;
+    color: black;
+    font-size: 16px;
+}
+
+.uploadButton {
+    padding: 10px 20px;
+    margin-top: 60px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.progressContainer {
+    margin-top: 20px;
+    text-align: left;
+    background-color: #f0f3f5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100px;
+    width: 800px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.fileInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progressBarContainer {
+    height: 8px;
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 8px;
+    background-color: #355fcb;
+    transition: width 0.3s ease-in-out;
+}
+
+.progressText {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    margin-left: 650px;
+}

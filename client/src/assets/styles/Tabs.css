@@ -1,0 +1,33 @@
+.tabs-container {
+    margin-left: -90;
+    display: flex;
+    gap: 10px;
+    padding: 20;
+
+}
+
+.tab-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: transparent;
+    font-size: 16px;
+
+    color: #6b7280;
+    /* Light gray for inactive text */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.tab-button.active {
+    background-color: #f3f4f6;
+    /* Light gray background for active */
+    color: #111827;
+    /* Dark text for active */
+    font-weight: bold;
+}
+
+.tab-button:hover {
+    background-color: #e5e7eb;
+    /* Slight hover effect for better interaction */
+}
