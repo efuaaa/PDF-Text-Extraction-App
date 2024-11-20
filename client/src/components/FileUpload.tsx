@@ -3,6 +3,7 @@ import axios from 'axios';
 import myImage from "../assets/images/upload-file.png";
 import pdf from "../assets/images/pdf.png"; // Adjust the path as needed
 import ModalView from "./ModalView";
+import pdfUploaded from "../assets/images/check.png";
 
 
 const FileUpload: React.FC = () => {
@@ -188,6 +189,27 @@ const FileUpload: React.FC = () => {
                     />
                 )}
             </div>
+            {/* {file &&
+                <section className="transactions-section">
+                    <h5 className="header-two">UPLOADED FILE</h5>
+                    <div className="summary-card">
+                        <table className="transactions-table">
+                            <tbody>
+                                <tr>
+                                    <td><img
+                                        src={pdfUploaded}
+                                        alt="pdfUploaded"
+                                        style={{ width: "30px", height: "30px" }}
+                                    />{file?.name}</td>
+                                  
+                                    <td>Submitted Successfully</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            } */}
 
         </div>
 
