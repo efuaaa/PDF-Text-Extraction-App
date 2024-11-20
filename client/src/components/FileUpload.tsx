@@ -17,13 +17,8 @@ const FileUpload: React.FC = () => {
     const [extractedFileContent, setExtractedFileContent] = useState<string>('');
 
 
-    const handleThumbsUp = () => {
-        alert("You clicked Thumbs Up!");
-        setIsModalOpen(false);
-    };
-
-    const handleThumbsDown = () => {
-        alert("You clicked Thumbs Down!");
+    const handleModalClose = () => {
+        alert("Feedback Submitted Successfully!");
         setIsModalOpen(false);
     };
 
@@ -189,12 +184,13 @@ const FileUpload: React.FC = () => {
                         file_name={file?.name}
                         onClose={() => setIsModalOpen(false)}
                         file_content={extractedFileContent}
-                        onThumbsUp={handleThumbsUp}
-                        onThumbsDown={handleThumbsDown}
+                        closeModal={handleModalClose}
                     />
                 )}
             </div>
+
         </div>
+
     );
 };
 

@@ -4,13 +4,13 @@ import thumbsUp from "../assets/images/thumbs_up.png";
 import thumbsDown from "../assets/images/thumbs_down.png";
 import axios from 'axios';
 
+
 interface ModalProps {
     title: string;
     file_name: string | undefined;
     file_content: string;
     onClose: () => void;
-    onThumbsUp: () => void;
-    onThumbsDown: () => void;
+    closeModal: () => void;
 }
 
 const ModalView: React.FC<ModalProps> = ({
@@ -18,21 +18,19 @@ const ModalView: React.FC<ModalProps> = ({
     file_name,
     file_content,
     onClose,
-    onThumbsUp,
-    onThumbsDown,
+    closeModal,
 }) => {
 
     const [submittedFeedback, setsubmittedFeedback] = useState<boolean>(false);
+
 
     const submitFeedback = async (file_name: string | undefined, feedback: string) => {
         try {
             const response = await axios.post('http://127.0.0.1:8000/submit/feedback/', { "file_name": file_name, "feedback": feedback })
             if (response.data === "Submitted feedback successfully") {
-                console.log("lolipop")
                 setsubmittedFeedback(true);
-                onThumbsUp();
-                onThumbsDown();
             }
+            closeModal();
 
         } catch (error) {
             console.error('Error fetching data:', error);
