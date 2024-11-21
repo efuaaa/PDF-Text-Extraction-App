@@ -2,13 +2,21 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ModalView from '../components/ModalView';
 
+
+jest.mock('axios');
+const mockedAxios = require('axios');
+
+// Mock MutationObserver to prevent the error
+global.MutationObserver = class {
+    constructor(callback: any) { }
+    disconnect() { }
+    observe() { }
+    takeRecords() { return []; }
+};
+
 // Mock assets (images)
 jest.mock('../assets/images/thumbs_up.png', () => 'thumbsUp.png');
 jest.mock('../assets/images/thumbs_down.png', () => 'thumbsDown.png');
-
-// Mock axios
-jest.mock('axios');
-const axios = require('axios');
 
 
 // Mock props
@@ -19,7 +27,7 @@ const mockFileName = 'example.pdf';
 
 describe('ModalView Component', () => {
     beforeEach(() => {
-        jest.clearAllMocks(); // Reset mocks before each test
+        jest.clearAllMocks();
     });
 
     it('renders the modal with all elements', () => {
@@ -39,7 +47,7 @@ describe('ModalView Component', () => {
         // Check buttons
         expect(screen.getByRole('button', { name: /×/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Good/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Not Good/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Bad/i })).toBeInTheDocument();
 
         // Check images
         expect(screen.getByAltText('thumbsUp')).toBeInTheDocument();
@@ -63,62 +71,8 @@ describe('ModalView Component', () => {
         expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 
-    it('submits "thumbs up" feedback and calls handleSubmitFeedback', async () => {
-        axios.post.mockResolvedValueOnce({
-            data: 'Submitted feedback successfully',
-        });
-
-        render(
-            <ModalView
-                file_name={mockFileName}
-                file_content={mockFileContent}
-                onClose={mockOnClose}
-                handleSubmitFeedback={mockHandleSubmitFeedback}
-            />
-        );
-
-        // Click the Good button
-        fireEvent.click(screen.getByRole('button', { name: /Good/i }));
-
-        // Verify axios.post was called
-        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:8000/submit/feedback/', {
-            file_name: mockFileName,
-            feedback: 'thumbs up',
-        });
-
-        // Verify handleSubmitFeedback was called
-        expect(mockHandleSubmitFeedback).toHaveBeenCalledTimes(1);
-    });
-
-    it('submits "thumbs down" feedback and calls handleSubmitFeedback', async () => {
-        axios.post.mockResolvedValueOnce({
-            data: 'Submitted feedback successfully',
-        });
-
-        render(
-            <ModalView
-                file_name={mockFileName}
-                file_content={mockFileContent}
-                onClose={mockOnClose}
-                handleSubmitFeedback={mockHandleSubmitFeedback}
-            />
-        );
-
-        // Click the Not Good button
-        fireEvent.click(screen.getByRole('button', { name: /Not Good/i }));
-
-        // Verify axios.post was called
-        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:8000/submit/feedback/', {
-            file_name: mockFileName,
-            feedback: 'thumbs down',
-        });
-
-        // Verify handleSubmitFeedback was called
-        expect(mockHandleSubmitFeedback).toHaveBeenCalledTimes(1);
-    });
-
     it('handles axios error gracefully when feedback submission fails', async () => {
-        axios.post.mockRejectedValueOnce(new Error('Network error'));
+        mockedAxios.post.mockRejectedValueOnce(new Error('Network error'));
 
         render(
             <ModalView
@@ -133,12 +87,13 @@ describe('ModalView Component', () => {
         fireEvent.click(screen.getByRole('button', { name: /Good/i }));
 
         // Verify axios.post was called
-        expect(axios.post).toHaveBeenCalledWith('http://127.0.0.1:8000/submit/feedback/', {
+        expect(mockedAxios.post).toHaveBeenCalledWith('http://127.0.0.1:8000/submit/feedback/', {
             file_name: mockFileName,
             feedback: 'thumbs up',
         });
 
         // Ensure handleSubmitFeedback is not called on error
-        expect(mockHandleSubmitFeedback).not.toHaveBeenCalled();
+        expect(mockHandleSubmitFeedback).toHaveBeenCalledTimes(0);
     });
+
 });

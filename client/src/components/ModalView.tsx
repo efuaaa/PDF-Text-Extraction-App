@@ -23,12 +23,11 @@ const ModalView: React.FC<ModalProps> = ({
         try {
             const response = await axios.post('http://127.0.0.1:8000/submit/feedback/', { "file_name": file_name, "feedback": feedback })
             if (response.data === "Submitted feedback successfully") {
-
+                handleSubmitFeedback();
             }
-            handleSubmitFeedback();
 
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error Submitting Feedback:', error);
         }
 
     };
@@ -57,7 +56,7 @@ const ModalView: React.FC<ModalProps> = ({
                             src={thumbsDown}
                             alt="thumbsDown"
                             style={{ width: "30px", height: "30px" }}
-                        />  Not Good
+                        />  Bad
                     </button>
                 </div>
             </div>
