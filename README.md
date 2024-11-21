@@ -98,6 +98,8 @@ pdf-text-extraction-app/
 {
   "file_name": "example.pdf",
   "file_content": "Extracted text from the PDF."
+  "feedback_rating": "thumbs up"
+  "date_uploaded": "2024-11-20T16:08:38.638291"
 }
 ```
 2. **Submit Feedback**
@@ -105,15 +107,20 @@ pdf-text-extraction-app/
 - Endpoint: POST /submit/feedback/
 - Description: Submits feedback for a specific file.
 
+3. **Get List of Files**
+
+- Endpoint: GET /getfiles/
+- Description: Get List of all submitted files.
+
 ```
-Request Body:
-{
-  "file_name": "example.pdf",
-  "feedback": "thumbs up"
-}
 Response:
 {
-  "message": "Submitted feedback successfully."
+  "example.pdf": {
+    "file_name": "example.pdf",
+    "file_content": "Extracted text from the PDF."
+    "feedback_rating": "thumbs up"
+    "date_uploaded": "2024-11-20T16:08:38.638291"
+  }
 }
 ```
 ### Contributing
