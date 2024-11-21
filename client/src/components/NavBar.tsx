@@ -1,3 +1,4 @@
+import React from 'react';
 import "../assets/styles/NavBar.css";
 import logo from "../assets/images/text.png";
 import NavBarTabs from "./NavBarTabs";

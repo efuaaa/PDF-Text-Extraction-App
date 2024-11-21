@@ -50,12 +50,15 @@ npm start
 _This will start the React application at http://localhost:3000._
 
 - Set up the Backend:
+To run the application, you change directory so you are in the server folder. Then you can run:
 ```
 cd server
 pip install -r requirements.txt
-uvicorn main:app --reload
+fastapi run --port 8000 server.py ⁠
 ```
-_This will start the FastAPI server at http://127.0.0.1:8000._
+_This will start the FastAPI server at http://127.0.0.1:8000._ OR http://0.0.0.0:8000 
+
+To run the tests you can run the command ⁠ ```pytest tests``` ⁠ from the same directory
 
 #### Usage
 - Navigate to the frontend application (http://localhost:3000).
@@ -134,7 +137,7 @@ git push origin feature-name
 ### Future Improvements
 
 1. Text Highlighting: Allow users to highlight mismatched or incorrect text.
-2. Multi-language Support: Enable text extraction for PDFs in multiple languages.
+2. Intelligent Text Extraction: Leverage the use of AI models to extract text.
 3. Advanced Feedback: Provide options for detailed feedback beyond thumbs up/down.
 
 ##### License

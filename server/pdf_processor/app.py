@@ -1,8 +1,8 @@
 from typing import Annotated
 from fastapi import File, UploadFile, HTTPException, Request, APIRouter
 from datetime import datetime
-from pdf_processor.models import FeedbackDto
-from pdf_processor.file_processor import extract_text_from_pdf
+from server.pdf_processor.models import FeedbackDto
+from server.pdf_processor.file_processor import extract_text_from_pdf
 
 
 router = APIRouter(

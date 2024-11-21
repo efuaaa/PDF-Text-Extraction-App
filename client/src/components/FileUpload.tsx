@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import myImage from "../assets/images/upload-file.png";
 import pdf from "../assets/images/pdf.png"; // Adjust the path as needed
 import ModalView from "./ModalView";
-import pdfUploaded from "../assets/images/check.png";
 
 
 const FileUpload: React.FC = () => {
@@ -15,12 +14,18 @@ const FileUpload: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showModalButton, setShowModalButton] = useState(false);
     const [showExtractButton, setshowExtractButton] = useState(false);
+    const [showProgressContainer, setshowProgressContainer] = useState(false);
     const [extractedFileContent, setExtractedFileContent] = useState<string>('');
 
 
     const handleModalClose = () => {
         alert("Feedback Submitted Successfully!");
         setIsModalOpen(false);
+        setshowExtractButton(false);
+        setshowProgressContainer(false);
+        setUploadProgress(0);
+        setShowModalButton(false);
+        setFile(null);
     };
 
     // Handle drag events
@@ -46,6 +51,7 @@ const FileUpload: React.FC = () => {
         const uploadedFile = event.target.files?.[0];
         setFile(uploadedFile || null);
         setshowExtractButton(true)
+        setshowProgressContainer(true);
     };
 
     const handleUpload = async () => {
@@ -134,9 +140,7 @@ const FileUpload: React.FC = () => {
                     accept='.pdf'
                     onChange={handleFileSelect}
                 />
-                {file && (
-                    // <div style={styles.container}>
-
+                {file && showProgressContainer && (
                     <div style={styles.progressContainer}>
                         <div style={styles.fileNameContainer}>
                             <img
@@ -174,7 +178,7 @@ const FileUpload: React.FC = () => {
                         </button>
                     )
                 }
-                {showModalButton && (
+                {showModalButton && showProgressContainer && (
                     <button style={styles.modalButton}
                         onClick={() => setIsModalOpen(true)}>Review Extracted Text</button>
                 )}
@@ -189,34 +193,11 @@ const FileUpload: React.FC = () => {
                     />
                 )}
             </div>
-            {/* {file &&
-                <section className="transactions-section">
-                    <h5 className="header-two">UPLOADED FILE</h5>
-                    <div className="summary-card">
-                        <table className="transactions-table">
-                            <tbody>
-                                <tr>
-                                    <td><img
-                                        src={pdfUploaded}
-                                        alt="pdfUploaded"
-                                        style={{ width: "30px", height: "30px" }}
-                                    />{file?.name}</td>
-                                  
-                                    <td>Submitted Successfully</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            } */}
-
         </div>
 
     );
 };
 
-// Styles
 const styles: Record<string, React.CSSProperties> = {
     container: {
         display: 'flex',
@@ -241,14 +222,6 @@ const styles: Record<string, React.CSSProperties> = {
         borderColor: '#007bff',
         backgroundColor: '#eef7ff',
     },
-    feedBackSection: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        padding: 20,
-        gap: 20,
-    },
-
     instructions: {
         color: '#555555',
         fontSize: '14px',
@@ -280,24 +253,6 @@ const styles: Record<string, React.CSSProperties> = {
         fontSize: '12px',
         flex: 1,
         flexDirection: 'row',
-    },
-    exampleSection: {
-        marginTop: '20px',
-        textAlign: 'center',
-    },
-    downloadButton: {
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '4px',
-        backgroundColor: '#007bff',
-        color: 'white',
-        cursor: 'pointer',
-        margin: 20,
-    },
-    exampleText: {
-        marginTop: '10px',
-        fontSize: '12px',
-        color: '#888888',
     },
     input: {
         margin: '10px 0',
@@ -337,7 +292,6 @@ const styles: Record<string, React.CSSProperties> = {
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',
-
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
         width: '80%',
@@ -348,7 +302,6 @@ const styles: Record<string, React.CSSProperties> = {
         backgroundColor: '#F0F3F5',
         padding: 20,
         borderRadius: '8px',
-        // gap: 160,
 
     },
     fileNameContainer: {
@@ -394,13 +347,6 @@ const styles: Record<string, React.CSSProperties> = {
         backgroundColor: '#355FCB',
         transition: 'width 0.3s ease-in-out', // Add animation
     },
-    // progressText: {
-    //     marginTop: '10px',
-    //     fontSize: '14px',
-    //     color: '#333',
-    //     marginLeft: 650
-    // },
-
 };
 
 export default FileUpload;

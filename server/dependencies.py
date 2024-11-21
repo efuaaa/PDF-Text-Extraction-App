@@ -1,4 +1,4 @@
-from db_connector import get_db_instance
+from server.db_connector import get_db_instance
 
 
 class Dependencies:

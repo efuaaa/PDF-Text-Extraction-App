@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "../assets/styles/Dashboard.css";
 import folder from "../assets/images/folder.png";
@@ -38,7 +38,6 @@ const Dashboard = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-
     };
 
     const sortedFiles = Object.entries(uploadedFiles)
@@ -63,26 +62,24 @@ const Dashboard = () => {
         fetchSummary();
     }, []);
 
-    const renderRateUp = () => (
-        <>
 
-            <img
+    const renderRatingIcon = (rating: string) => {
+        if (rating === "thumbs up") {
+            return <img
                 src={rateUp}
                 alt="rateUp"
                 style={{ width: "22px", height: "22px" }}
             />
-        </>
-    );
-    const renderRateDown = () => (
-        <>
-
-            <img
+        }
+        if (rating === "thumbs down") {
+            return <img
                 src={rateDown}
                 alt="rateDown"
                 style={{ width: "22px", height: "22px" }}
-            />
-        </>
-    );
+            />;
+        }
+        return "N/A";
+    };
 
     return (
         <div className="dashboard-container">
@@ -152,17 +149,7 @@ const Dashboard = () => {
                                 <tr key={key}>
                                     <td>{file.filename}</td>
                                     <td>{moment(file.date_uploaded).format('LLL') || 'N/A'}</td>
-                                    {/* <td>{file.feedback_rating}</td> */}
-                                    <td>
-                                        {file.feedback_rating === "thumbs up" ? (
-                                            renderRateUp()
-                                        ) : file.feedback_rating === "thumbs down" ? (
-                                            renderRateDown()
-                                        ) : (
-                                            "N/A"
-                                        )}
-                                    </td>
-
+                                    <td>{renderRatingIcon(file.feedback_rating)}</td>
                                 </tr>
                             ))}
                         </tbody>
