@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "../assets/styles/ModalView.css";
 import thumbsUp from "../assets/images/thumbs_up.png";
 import thumbsDown from "../assets/images/thumbs_down.png";
@@ -6,31 +6,26 @@ import axios from 'axios';
 
 
 interface ModalProps {
-    title: string;
     file_name: string | undefined;
     file_content: string;
     onClose: () => void;
-    closeModal: () => void;
+    handleSubmitFeedback: () => void;
 }
 
 const ModalView: React.FC<ModalProps> = ({
-    title,
     file_name,
     file_content,
     onClose,
-    closeModal,
+    handleSubmitFeedback,
 }) => {
-
-    const [submittedFeedback, setsubmittedFeedback] = useState<boolean>(false);
-
 
     const submitFeedback = async (file_name: string | undefined, feedback: string) => {
         try {
             const response = await axios.post('http://127.0.0.1:8000/submit/feedback/', { "file_name": file_name, "feedback": feedback })
             if (response.data === "Submitted feedback successfully") {
-                setsubmittedFeedback(true);
+
             }
-            closeModal();
+            handleSubmitFeedback();
 
         } catch (error) {
             console.error('Error fetching data:', error);

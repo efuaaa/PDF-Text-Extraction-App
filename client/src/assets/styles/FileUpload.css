@@ -1,0 +1,161 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    margin-top: 30px;
+}
+
+.upload-box {
+    border: 2px dashed #cccccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    cursor: pointer;
+}
+
+.dragging {
+    border-color: #007bff;
+    background-color: #eef7ff;
+}
+
+.instructions {
+    color: #555555;
+    font-size: 14px;
+}
+
+.choose-file {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.hidden-input {
+    border: 2px dashed #cccccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    height: 150px;
+    margin-top: -185px;
+    text-align: center;
+    background-color: purple;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.file-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333333;
+}
+
+.supported-formats {
+    margin-top: 20px;
+    color: #888888;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+.input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    margin-top: 60px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.upload-button1 {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    margin-top: 60px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    margin-top: 30px;
+    flex: 1;
+    background-color: #f0f3f5;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.fileName-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.fileSize-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.upload-pdf {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-direction: row;
+    align-items: center;
+    width: 70%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    margin-top: 30px;
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.progress-bar-container {
+    height: 8px;
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: #355fcb;
+    transition: width 0.3s ease-in-out;
+}

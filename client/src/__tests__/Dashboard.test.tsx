@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import Dashboard from '../components/Dashboard';
-import axios from 'axios';
 
 jest.mock('axios'); // Mock axios globally
 
@@ -20,6 +19,8 @@ describe('Dashboard Component', () => {
 
     it('fetches and displays uploaded files in the table', async () => {
         // Mock API response
+        const axios = require('axios');
+
         (axios.get as jest.Mock).mockResolvedValueOnce({
             data: {
                 'File1.pdf': {

@@ -18,7 +18,7 @@ const FileUpload: React.FC = () => {
     const [extractedFileContent, setExtractedFileContent] = useState<string>('');
 
 
-    const handleModalClose = () => {
+    const handleSubmitFeedback = () => {
         alert("Feedback Submitted Successfully!");
         setIsModalOpen(false);
         setshowExtractButton(false);
@@ -185,11 +185,10 @@ const FileUpload: React.FC = () => {
 
                 {isModalOpen && (
                     <ModalView
-                        title="Your Feedback"
                         file_name={file?.name}
                         onClose={() => setIsModalOpen(false)}
                         file_content={extractedFileContent}
-                        closeModal={handleModalClose}
+                        handleSubmitFeedback={handleSubmitFeedback}
                     />
                 )}
             </div>
