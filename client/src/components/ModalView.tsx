@@ -22,8 +22,9 @@ const ModalView: React.FC<ModalProps> = ({
     const submitFeedback = async (file_name: string | undefined, feedback: string) => {
         try {
             const response = await axios.post('http://127.0.0.1:8000/submit/feedback/', { "file_name": file_name, "feedback": feedback })
-            if (response.data === "Submitted feedback successfully") {
+            if (response.data.message === "Submitted feedback successfully") {
                 handleSubmitFeedback();
+
             }
 
         } catch (error) {

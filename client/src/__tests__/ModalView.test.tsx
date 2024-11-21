@@ -27,7 +27,7 @@ const mockFileName = 'example.pdf';
 
 describe('ModalView Component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        jest.clearAllMocks(); // Clear mocks before each test to avoid state leaks
     });
 
     it('renders the modal with all elements', () => {
